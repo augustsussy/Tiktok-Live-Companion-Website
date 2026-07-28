@@ -197,11 +197,9 @@
 
   .trust-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr;
     gap:14px;
   }
-
-  @media (max-width:640px){ .trust-grid{ grid-template-columns:1fr; } }
 
   .trust-card{
     background:var(--panel);
@@ -222,18 +220,6 @@
   .trust-card .value{
     font-size:14px;
     color:var(--text);
-  }
-
-  .hash-box{
-    font-family:var(--font-mono);
-    font-size:12px;
-    color:var(--good);
-    background:var(--good-bg);
-    border:1px solid rgba(111,168,140,0.3);
-    padding:10px 12px;
-    border-radius:8px;
-    word-break:break-all;
-    margin-top:8px;
   }
 
   .steps{
@@ -270,19 +256,6 @@
   }
 
   .steps li strong{ color:var(--text); }
-
-  .warn-note{
-    display:flex;
-    gap:12px;
-    background:var(--warn-bg);
-    border:1px solid rgba(242,194,107,0.3);
-    border-radius:10px;
-    padding:14px 16px;
-    margin-top:18px;
-  }
-
-  .warn-note .mark{ color:var(--warn); font-family:var(--font-mono); font-weight:700; }
-  .warn-note p{ margin:0; font-size:13.5px; color:var(--text-dim); }
 
   .links-row{
     display:flex;
@@ -337,9 +310,9 @@
   <div class="download-panel">
     <div class="download-info">
       <span class="ver">v0.1.1</span>
-      <div class="filemeta">TikTok Live Companion Setup 0.1.1.exe · Windows 10/11 · ~80 MB</div>
+      <div class="filemeta">TikTok Live Companion Setup 0.1.1.exe · Windows 10/11 · 96.8 MB</div>
     </div>
-    <a href="#" class="dl-btn">Download for Windows</a>
+    <a href="https://github.com/augustsussy/tiktok-live-companion/releases/download/v0.1.1/TikTok.Live.Companion.Setup.0.1.1.exe" class="dl-btn">Download for Windows</a>
   </div>
 </header>
 
@@ -352,22 +325,12 @@
 
     <div class="trust-grid">
       <div class="trust-card">
-        <div class="label">SHA256 checksum</div>
-        <div class="value">Matches the exact file above. Compare it after downloading:</div>
-        <div class="hash-box">A1B2C3D4E5F60789ABCDEF1234567890ABCDEF1234567890ABCDEF12345678</div>
-      </div>
-      <div class="trust-card">
         <div class="label">Scan report</div>
         <div class="value">This build has been scanned publicly on VirusTotal — check the result before installing.</div>
         <div class="links-row">
           <a class="link-chip" href="#">↗ View VirusTotal scan</a>
         </div>
       </div>
-    </div>
-
-    <div class="warn-note">
-      <span class="mark">!</span>
-      <p>Placeholder values above — replace the checksum with the real output of <code>Get-FileHash</code> on your actual built <code>.exe</code>, and swap the VirusTotal link once you've uploaded that same file at virustotal.com.</p>
     </div>
   </section>
 
@@ -387,7 +350,7 @@
     <h2>Check the source</h2>
     <p class="body-text">If you want to see exactly what's running on your machine before installing, the code is public — it's the same source this build comes from.</p>
     <div class="links-row">
-      <a class="link-chip" href="#">↗ View source on GitHub</a>
+      <a class="link-chip" href="https://github.com/augustsussy/tiktok-live-companion">↗ View source on GitHub</a>
       <a class="link-chip" href="patch-library.html">↗ Full patch history</a>
     </div>
   </section>
