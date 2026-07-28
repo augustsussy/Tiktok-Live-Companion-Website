@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok LIVE Companion — Patch Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120f1a;
+    --bg-grid: rgba(144,97,249,0.05);
+    --panel:#19141f;
+    --panel-2:#1e1826;
+    --border:#2c2438;
+    --border-soft:#231d2d;
+    --text:#ede8f7;
+    --text-dim:#9c93b0;
+    --text-faint:#655d78;
+    --accent:#9061f9;
+    --accent-bright:#b794ff;
+    --accent-soft:rgba(144,97,249,0.13);
+    --add-text:#8fd9b6;
+    --add-bg:rgba(111,168,140,0.10);
+    --add-line:rgba(111,168,140,0.35);
+    --rem-text:#f2917a;
+    --rem-bg:rgba(232,115,92,0.10);
+    --rem-line:rgba(232,115,92,0.35);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(144,97,249,0.10), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(144,97,249,0.06), transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{color:var(--accent-bright);}
+
+  ::selection{ background:var(--accent-soft); color:var(--accent-bright); }
+
+  /* ---------- Header ---------- */
+  header{
+    max-width:920px;
+    margin:0 auto;
+    padding:64px 24px 40px;
+  }
+
+  .brand-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:28px;
+  }
+
+  .brand-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+
+  .brand-name{
+    font-family:var(--font-mono);
+    font-size:13px;
+    letter-spacing:0.06em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-size:clamp(2.1rem, 5vw, 3.2rem);
+    font-weight:700;
+    line-height:1.05;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+
+  h1 .accent{color:var(--accent-bright);}
+
+  .subhead{
+    font-size:16px;
+    color:var(--text-dim);
+    max-width:56ch;
+    margin:0 0 32px;
+  }
+
+  .status-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .status-pill{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-dim);
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    padding:6px 12px 6px 10px;
+    border-radius:100px;
+  }
+
+  .status-pill .led{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--add-text);
+    box-shadow:0 0 6px var(--add-text);
+  }
+
+  /* ---------- Filter bar ---------- */
+  .filter-bar{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px 8px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    position:sticky;
+    top:0;
+    z-index:5;
+    padding-top:16px;
+    padding-bottom:16px;
+    background:linear-gradient(var(--bg) 78%, transparent);
+  }
+
+  .filter-btn{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--text-dim);
+    background:transparent;
+    border:1px solid var(--border);
+    padding:7px 14px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+
+  .filter-btn:hover{ color:var(--text); border-color:var(--accent); }
+
+  .filter-btn.active{
+    color:#0d0a14;
+    background:var(--accent-bright);
+    border-color:var(--accent-bright);
+  }
+
+  /* ---------- Timeline ---------- */
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:16px 24px 100px;
+    position:relative;
+  }
+
+  .timeline{
+    position:relative;
+    padding-left:28px;
+  }
+
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left:5px;
+    top:6px;
+    bottom:6px;
+    width:1px;
+    background:linear-gradient(var(--border), var(--border-soft) 92%, transparent);
+  }
+
+  .entry{
+    position:relative;
+    margin-bottom:36px;
+    opacity:0;
+    transform:translateY(10px);
+    animation:rise .5s ease forwards;
+  }
+
+  .entry:last-child{ margin-bottom:0; }
+
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+
+  .entry::before{
+    content:'';
+    position:absolute;
+    left:-28px;
+    top:8px;
+    width:11px;height:11px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--accent);
+  }
+
+  .entry.hidden{ display:none; }
+
+  .entry-card{
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius:12px;
+    padding:22px 24px;
+  }
+
+  .entry-meta{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:10px;
+  }
+
+  .version-tag{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--accent-bright);
+    background:var(--accent-soft);
+    padding:3px 9px;
+    border-radius:5px;
+  }
+
+  .category-tag{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+  }
+
+  .entry-title{
+    font-family:var(--font-display);
+    font-size:18px;
+    font-weight:600;
+    margin:0 0 8px;
+    color:var(--text);
+  }
+
+  .entry-desc{
+    font-size:14.5px;
+    color:var(--text-dim);
+    margin:0 0 14px;
+    max-width:68ch;
+  }
+
+  .entry-desc code{
+    font-family:var(--font-mono);
+    font-size:0.92em;
+    background:var(--panel-2);
+    padding:1px 5px;
+    border-radius:4px;
+    color:var(--accent-bright);
+  }
+
+  /* ---------- Diff block ---------- */
+  .diff{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    background:#100c17;
+    border:1px solid var(--border-soft);
+    border-radius:8px;
+    overflow:hidden;
+  }
+
+  .diff-file{
+    padding:8px 14px;
+    font-size:11.5px;
+    color:var(--text-faint);
+    border-bottom:1px solid var(--border-soft);
+    background:var(--panel-2);
+  }
+
+  .diff-line{
+    padding:3px 14px;
+    white-space:pre;
+    overflow-x:auto;
+  }
+
+  .diff-line.rem{ background:var(--rem-bg); color:var(--rem-text); border-left:2px solid var(--rem-line); }
+  .diff-line.add{ background:var(--add-bg); color:var(--add-text); border-left:2px solid var(--add-line); }
+  .diff-line.ctx{ color:var(--text-faint); border-left:2px solid transparent; }
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px 64px;
+    color:var(--text-faint);
+    font-size:12.5px;
+    font-family:var(--font-mono);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .entry{ animation:none; opacity:1; transform:none; }
+  }
+
+  @media (max-width:560px){
+    header{ padding:44px 18px 28px; }
+    main, .filter-bar{ padding-left:18px; padding-right:18px; }
+    .timeline{ padding-left:22px; }
+    .entry::before{ left:-22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand-row">
+    <span class="brand-dot"></span>
+    <span class="brand-name">TikTok LIVE Companion</span>
+  </div>
+  <h1>Patch <span class="accent">Library</span></h1>
+  <p class="subhead">A running log of what's actually changed under the hood — the crashes fixed, the payload fields corrected, and the build issues resolved along the way.</p>
+  <div class="status-row">
+    <span class="status-pill"><span class="led"></span>TikTok integration</span>
+    <span class="status-pill"><span class="led"></span>Spotify integration</span>
+    <span class="status-pill"><span class="led"></span>Build: stable</span>
+  </div>
+</header>
+
+<div class="filter-bar" id="filterBar">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="build">Build &amp; Packaging</button>
+  <button class="filter-btn" data-filter="commands">Chat Commands</button>
+  <button class="filter-btn" data-filter="tiktok">TikTok Integration</button>
+</div>
+
+<main>
+  <div class="timeline" id="timeline">
+
+    <div class="entry" data-category="build">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.1.1</span>
+          <span class="category-tag">Build &amp; Packaging</span>
+        </div>
+        <h3 class="entry-title">Fixed a startup crash in the packaged app (ENOTDIR)</h3>
+        <p class="entry-desc">Once <code>asar</code> packing was enabled, three services were still writing <code>settings.json</code>, <code>spotify_tokens.json</code>, and <code>app.log</code> to a path inside the read-only <code>app.asar</code> archive. Moved all of them onto the shared <code>getDataDir()</code> helper, which now resolves to Electron's writable <code>userData</code> folder.</p>
+        <div class="diff">
+          <div class="diff-file">src/services/settingsService.js</div>
+          <div class="diff-line rem">- const SETTINGS_FILE = path.join(__dirname, '..', '..', 'data', 'settings.json');</div>
+          <div class="diff-line add">+ const SETTINGS_FILE = path.join(getDataDir(), 'settings.json');</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-category="build">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.1.1</span>
+          <span class="category-tag">Build &amp; Packaging</span>
+        </div>
+        <h3 class="entry-title">Trimmed the installer size</h3>
+        <p class="entry-desc">The build was shipping <code>nodemon</code>, <code>concurrently</code>, and <code>wait-on</code> — none of which are needed at runtime. Re-enabled asar packing and excluded the dev-only packages from the bundle.</p>
+        <div class="diff">
+          <div class="diff-file">package.json</div>
+          <div class="diff-line rem">- "asar": false,</div>
+          <div class="diff-line add">+ "asar": true,</div>
+          <div class="diff-line ctx">  "files": [ "main.js", "src/**/*", "node_modules/**/*", "package.json",</div>
+          <div class="diff-line ctx">    "!node_modules/electron-builder/**/*", "!node_modules/electron/**/*",</div>
+          <div class="diff-line add">+   "!node_modules/nodemon/**/*",</div>
+          <div class="diff-line add">+   "!node_modules/concurrently/**/*",</div>
+          <div class="diff-line add">+   "!node_modules/wait-on/**/*"</div>
+          <div class="diff-line ctx">  ],</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-category="commands">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.1.0</span>
+          <span class="category-tag">Chat Commands</span>
+        </div>
+        <h3 class="entry-title">Restored the moderator check on !skip</h3>
+        <p class="entry-desc">A permission check had been accidentally deleted during a paste/merge, leaving <code>!skip</code> open to anyone in chat rather than just moderators and the host.</p>
+      </div>
+    </div>
+
+    <div class="entry" data-category="commands">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.1.0</span>
+          <span class="category-tag">Chat Commands</span>
+        </div>
+        <h3 class="entry-title">Removed a duplicate permission-check function</h3>
+        <p class="entry-desc">A bad merge left two definitions of <code>isModeratorOrHost</code> in the same file, silently shadowing one another. Consolidated back to one source of truth.</p>
+      </div>
+    </div>
+
+    <div class="entry" data-category="commands">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.0.9</span>
+          <span class="category-tag">Chat Commands</span>
+        </div>
+        <h3 class="entry-title">Fixed a crash on every song request</h3>
+        <p class="entry-desc"><code>!play</code> referenced a <code>settings</code> variable inside <code>requestSong()</code> that was never assigned, so every single request threw a <code>ReferenceError</code> before it could reach the queue.</p>
+        <div class="diff">
+          <div class="diff-file">src/spotify/spotifyQueueManager.js</div>
+          <div class="diff-line ctx">  function requestSong(user, query) {</div>
+          <div class="diff-line rem">-   if (queue.length >= settings.maxQueueLength) {</div>
+          <div class="diff-line add">+   const settings = settingsService.getSettings();</div>
+          <div class="diff-line add">+   if (queue.length >= settings.maxQueueLength) {</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry" data-category="tiktok">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.0.8</span>
+          <span class="category-tag">TikTok Integration</span>
+        </div>
+        <h3 class="entry-title">Stopped old chat replaying on reconnect</h3>
+        <p class="entry-desc">TikTok resends recent chat history on every reconnect, which meant comments and commands were firing a second time after any dropped connection. Added a 5-second deduplication window keyed by comment ID.</p>
+      </div>
+    </div>
+
+    <div class="entry" data-category="tiktok">
+      <div class="entry-card">
+        <div class="entry-meta">
+          <span class="version-tag">v0.0.7</span>
+          <span class="category-tag">TikTok Integration</span>
+        </div>
+        <h3 class="entry-title">Corrected mismatched event payload fields</h3>
+        <p class="entry-desc">Confirmed the real field names coming out of <code>tiktok-live-connector</code> v2.x by logging raw payloads — several assumptions from the docs didn't match what was actually being sent.</p>
+        <div class="diff">
+          <div class="diff-file">src/tiktok/tiktokEventMapper.js</div>
+          <div class="diff-line rem">- const commentText = data.comment;</div>
+          <div class="diff-line add">+ const commentText = data.content;</div>
+          <div class="diff-line rem">- const viewerCount = data.viewerCount;</div>
+          <div class="diff-line add">+ const viewerCount = data.total;</div>
+          <div class="diff-line rem">- const likeCount = data.likeCount;</div>
+          <div class="diff-line add">+ const likeCount = data.count;</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  tiktok-live-companion · patch log · entries ordered newest → oldest
+</footer>
+
+<script>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const entries = document.querySelectorAll('.entry');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      entries.forEach(entry => {
+        const match = filter === 'all' || entry.dataset.category === filter;
+        entry.classList.toggle('hidden', !match);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

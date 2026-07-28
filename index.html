@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok LIVE Companion — Download</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#120f1a;
+    --panel:#19141f;
+    --panel-2:#1e1826;
+    --border:#2c2438;
+    --border-soft:#231d2d;
+    --text:#ede8f7;
+    --text-dim:#9c93b0;
+    --text-faint:#655d78;
+    --accent:#9061f9;
+    --accent-bright:#b794ff;
+    --accent-soft:rgba(144,97,249,0.13);
+    --good:#8fd9b6;
+    --good-bg:rgba(111,168,140,0.10);
+    --warn:#f2c26b;
+    --warn-bg:rgba(242,194,107,0.10);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(144,97,249,0.10), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(144,97,249,0.06), transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:var(--accent-bright); }
+  ::selection{ background:var(--accent-soft); color:var(--accent-bright); }
+
+  nav{
+    max-width:920px;
+    margin:0 auto;
+    padding:28px 24px 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    letter-spacing:0.05em;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+
+  .brand-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 4px var(--accent-soft);
+  }
+
+  .nav-links{ display:flex; gap:22px; }
+  .nav-links a{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    text-decoration:none;
+  }
+  .nav-links a:hover{ color:var(--text); }
+
+  header{
+    max-width:920px;
+    margin:0 auto;
+    padding:56px 24px 20px;
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-size:clamp(2rem, 5vw, 3rem);
+    font-weight:700;
+    line-height:1.08;
+    margin:0 0 14px;
+    letter-spacing:-0.01em;
+  }
+
+  h1 .accent{ color:var(--accent-bright); }
+
+  .subhead{
+    font-size:16px;
+    color:var(--text-dim);
+    max-width:56ch;
+    margin:0 0 32px;
+  }
+
+  .download-panel{
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius:14px;
+    padding:26px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+
+  .download-info .ver{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--accent-bright);
+    background:var(--accent-soft);
+    padding:3px 9px;
+    border-radius:5px;
+    margin-bottom:10px;
+    display:inline-block;
+  }
+
+  .download-info .filemeta{
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--text-faint);
+    margin-top:8px;
+  }
+
+  .dl-btn{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:15px;
+    color:#0d0a14;
+    background:var(--accent-bright);
+    border:none;
+    padding:14px 26px;
+    border-radius:10px;
+    cursor:pointer;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+
+  .dl-btn:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(144,97,249,0.25); }
+
+  main{
+    max-width:920px;
+    margin:0 auto;
+    padding:8px 24px 100px;
+  }
+
+  section{ margin-top:52px; }
+
+  .section-eyebrow{
+    font-family:var(--font-mono);
+    font-size:11.5px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--text-faint);
+    margin-bottom:10px;
+  }
+
+  h2{
+    font-family:var(--font-display);
+    font-size:22px;
+    font-weight:600;
+    margin:0 0 12px;
+  }
+
+  p.body-text{
+    font-size:14.5px;
+    color:var(--text-dim);
+    max-width:68ch;
+    margin:0 0 16px;
+  }
+
+  code, .mono{
+    font-family:var(--font-mono);
+  }
+
+  p.body-text code{
+    background:var(--panel-2);
+    padding:1px 6px;
+    border-radius:4px;
+    color:var(--accent-bright);
+    font-size:0.9em;
+  }
+
+  .trust-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  @media (max-width:640px){ .trust-grid{ grid-template-columns:1fr; } }
+
+  .trust-card{
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    border-radius:12px;
+    padding:18px 20px;
+  }
+
+  .trust-card .label{
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--text-faint);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+    margin-bottom:8px;
+  }
+
+  .trust-card .value{
+    font-size:14px;
+    color:var(--text);
+  }
+
+  .hash-box{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--good);
+    background:var(--good-bg);
+    border:1px solid rgba(111,168,140,0.3);
+    padding:10px 12px;
+    border-radius:8px;
+    word-break:break-all;
+    margin-top:8px;
+  }
+
+  .steps{
+    counter-reset:step;
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding-left:38px;
+    margin-bottom:16px;
+    font-size:14.5px;
+    color:var(--text-dim);
+  }
+
+  .steps li::before{
+    content:counter(step);
+    position:absolute;
+    left:0;
+    top:-1px;
+    width:24px;height:24px;
+    border-radius:7px;
+    background:var(--accent-soft);
+    color:var(--accent-bright);
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .steps li strong{ color:var(--text); }
+
+  .warn-note{
+    display:flex;
+    gap:12px;
+    background:var(--warn-bg);
+    border:1px solid rgba(242,194,107,0.3);
+    border-radius:10px;
+    padding:14px 16px;
+    margin-top:18px;
+  }
+
+  .warn-note .mark{ color:var(--warn); font-family:var(--font-mono); font-weight:700; }
+  .warn-note p{ margin:0; font-size:13.5px; color:var(--text-dim); }
+
+  .links-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-top:6px;
+  }
+
+  .link-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    font-family:var(--font-mono);
+    font-size:12.5px;
+    color:var(--text-dim);
+    background:var(--panel);
+    border:1px solid var(--border-soft);
+    padding:8px 14px;
+    border-radius:100px;
+    text-decoration:none;
+  }
+
+  .link-chip:hover{ color:var(--text); border-color:var(--accent); }
+
+  footer{
+    max-width:920px;
+    margin:0 auto;
+    padding:0 24px 64px;
+    color:var(--text-faint);
+    font-size:12.5px;
+    font-family:var(--font-mono);
+    border-top:1px solid var(--border-soft);
+    padding-top:24px;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="brand-dot"></span>TikTok LIVE Companion</div>
+  <div class="nav-links">
+    <a href="patch-library.html">Patch notes</a>
+    <a href="#trust">Verify the download</a>
+    <a href="#source">Source</a>
+  </div>
+</nav>
+
+<header>
+  <h1>Download <span class="accent">TikTok LIVE Companion</span></h1>
+  <p class="subhead">A lightweight desktop companion for TikTok LIVE streamers — real-time chat events, viewer stats, and song requests through Spotify, running quietly alongside your stream.</p>
+
+  <div class="download-panel">
+    <div class="download-info">
+      <span class="ver">v0.1.1</span>
+      <div class="filemeta">TikTok Live Companion Setup 0.1.1.exe · Windows 10/11 · ~80 MB</div>
+    </div>
+    <a href="#" class="dl-btn">Download for Windows</a>
+  </div>
+</header>
+
+<main>
+
+  <section id="trust">
+    <div class="section-eyebrow">Before you run it</div>
+    <h2>Verify what you're installing</h2>
+    <p class="body-text">This installer isn't signed with a paid Windows certificate yet, so Windows will show a caution screen the first time you run it. That's expected for small independent apps — it isn't a sign that anything's wrong. Here's how to check for yourself instead of just taking my word for it.</p>
+
+    <div class="trust-grid">
+      <div class="trust-card">
+        <div class="label">SHA256 checksum</div>
+        <div class="value">Matches the exact file above. Compare it after downloading:</div>
+        <div class="hash-box">A1B2C3D4E5F60789ABCDEF1234567890ABCDEF1234567890ABCDEF12345678</div>
+      </div>
+      <div class="trust-card">
+        <div class="label">Scan report</div>
+        <div class="value">This build has been scanned publicly on VirusTotal — check the result before installing.</div>
+        <div class="links-row">
+          <a class="link-chip" href="#">↗ View VirusTotal scan</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-note">
+      <span class="mark">!</span>
+      <p>Placeholder values above — replace the checksum with the real output of <code>Get-FileHash</code> on your actual built <code>.exe</code>, and swap the VirusTotal link once you've uploaded that same file at virustotal.com.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Windows SmartScreen</div>
+    <h2>Why Windows shows a warning</h2>
+    <p class="body-text">Windows flags any app from an unrecognized publisher until enough people have run it safely, or the developer pays for a code-signing certificate. Neither of those apply to a new indie app yet — it doesn't mean the file is unsafe, just unfamiliar to Windows. Here's how to get past it:</p>
+    <ol class="steps">
+      <li>Double-click the downloaded <strong>.exe</strong>. You'll see "Windows protected your PC."</li>
+      <li>Click <strong>More info</strong> — this reveals a second button that wasn't visible before.</li>
+      <li>Click <strong>Run anyway</strong> to start the actual installer.</li>
+    </ol>
+  </section>
+
+  <section id="source">
+    <div class="section-eyebrow">Full transparency</div>
+    <h2>Check the source</h2>
+    <p class="body-text">If you want to see exactly what's running on your machine before installing, the code is public — it's the same source this build comes from.</p>
+    <div class="links-row">
+      <a class="link-chip" href="#">↗ View source on GitHub</a>
+      <a class="link-chip" href="patch-library.html">↗ Full patch history</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  tiktok-live-companion · built by Gee · support the project on Ko-fi
+</footer>
+
+</body>
+</html>
